@@ -18,6 +18,18 @@ public class ExpenseService : IExpenseService
 		return _context.Budget.FirstOrDefault();
 	}
 
+	private void CalculateBudget()
+	{
+		var budget = _context.Budget.FirstOrDefault();
+		var cashOut = _context.FixedExpense.Sum(f => f.Amount);
+		if (budget is not null && cashOut is not null)
+		{
+			budget.CashOut = cashOut ?? 0;
+			budget.DisposableIncome = budget.CashIn - cashOut ?? 0;
+			_context.SaveChanges();
+		}
+	}
+
 	public DynamicResult<Budget> UpdateCashIn(int cashIn)
 	{
 		var result = new DynamicResult<Budget>();
@@ -46,6 +58,11 @@ public class ExpenseService : IExpenseService
 			result.Success = false;
 			result.Message = e.Message;
 			result.StatusCode = 500;
+		}
+
+		if (result.Success)
+		{
+			CalculateBudget();
 		}
 
 		return result;
@@ -77,6 +94,11 @@ public class ExpenseService : IExpenseService
 			result.Success = false;
 			result.Message = e.Message;
 			result.StatusCode = 500;
+		}
+
+		if (result.Success)
+		{
+			CalculateBudget();
 		}
 
 		return result;
@@ -116,6 +138,11 @@ public class ExpenseService : IExpenseService
 			result.Message = e.Message;
 		}
 
+		if (result.Success)
+		{
+			CalculateBudget();
+		}
+
 		return result;
 	}
 
@@ -142,6 +169,11 @@ public class ExpenseService : IExpenseService
 		{
 			result.Success = false;
 			result.Message = e.Message;
+		}
+
+		if (result.Success)
+		{
+			CalculateBudget();
 		}
 
 		return result;

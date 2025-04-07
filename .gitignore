@@ -22,4 +22,4 @@ backend/*/Migrations/
 backend/*/obj
 backend/*/bin
 backend/.idea
-backend/*/Data/*.db
+backend/*/Data/*.db*
