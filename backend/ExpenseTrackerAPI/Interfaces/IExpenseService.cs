@@ -8,7 +8,10 @@ public interface IExpenseService
 	public DynamicResult<Budget> UpdateCashIn(int cashIn);
 	
 	public IEnumerable<FixedExpense> GetFixedExpenses();
-	public DynamicResult<FixedExpense> AddFixedExpense(string category, int amount);
+	public DynamicResult<FixedExpense> AddFixedExpense(FixedExpense expense);
 	public DynamicResult<FixedExpense> UpdateFixedExpense(int id, string? category, int? amount);
 	public DynamicResult<FixedExpense> DeleteFixedExpense(int id);
+
+	public IEnumerable<Purchase> GetPurchases();
+	public DynamicResult<Purchase> AddPurchase(Purchase purchase);
 }

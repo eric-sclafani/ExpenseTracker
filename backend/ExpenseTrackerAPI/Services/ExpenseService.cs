@@ -73,21 +73,15 @@ public class ExpenseService : IExpenseService
 		return _context.FixedExpense.ToList();
 	}
 
-	public DynamicResult<FixedExpense> AddFixedExpense(string category, int amount)
+	public DynamicResult<FixedExpense> AddFixedExpense(FixedExpense expense)
 	{
 		var result = new DynamicResult<FixedExpense>();
 
-		var newExpense = new FixedExpense()
-		{
-			Category = category,
-			Amount = amount
-		};
-
 		try
 		{
-			_context.FixedExpense.Add(newExpense);
+			_context.FixedExpense.Add(expense);
 			_context.SaveChanges();
-			result.Data = newExpense;
+			result.Data = expense;
 		}
 		catch (Exception e)
 		{
@@ -174,6 +168,31 @@ public class ExpenseService : IExpenseService
 		if (result.Success)
 		{
 			CalculateBudget();
+		}
+
+		return result;
+	}
+
+	public IEnumerable<Purchase> GetPurchases()
+	{
+		return _context.Purchase.ToList();
+	}
+
+	public DynamicResult<Purchase> AddPurchase(Purchase purchase)
+	{
+		var result = new DynamicResult<Purchase>();
+
+		try
+		{
+			_context.Purchase.Add(purchase);
+			_context.SaveChanges();
+			result.Data = purchase;
+		}
+		catch (Exception e)
+		{
+			result.Success = false;
+			result.Message = e.Message;
+			result.StatusCode = 500;
 		}
 
 		return result;

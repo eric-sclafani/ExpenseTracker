@@ -51,14 +51,14 @@ public class ExpenseController : ControllerBase
 	}
 
 	[HttpPost]
-	public IActionResult NewFixedExpense(string category, int amount)
+	public IActionResult NewFixedExpense(FixedExpense expense)
 	{
-		if (amount <= 0)
+		if (expense.Amount <= 0)
 		{
 			return BadRequest("Error: param 'amount' must be greater than 0");
 		}
 
-		var result = _expenseService.AddFixedExpense(category, amount);
+		var result = _expenseService.AddFixedExpense(expense);
 		return result.Success
 			? Ok(result.Data)
 			: ServerError(result.Message);
@@ -84,7 +84,7 @@ public class ExpenseController : ControllerBase
 			return Ok(result);
 		}
 	}
-	
+
 	[HttpDelete]
 	public IActionResult DeleteFixedExpense(int id)
 	{
@@ -97,9 +97,21 @@ public class ExpenseController : ControllerBase
 		{
 			return Ok(result);
 		}
-		
+	}
+
+	[HttpGet]
+	public ActionResult<IEnumerable<Purchase>> GetPurchases()
+	{
+		var purchases = _expenseService.GetPurchases();
+		return Ok(purchases);
+	}
+
+	[HttpPost]
+	public IActionResult AddPurchase(Purchase purchase)
+	{
+		var result = _expenseService.AddPurchase(purchase);
+		return result.Success
+			? Ok(result.Data)
+			: ServerError(result.Message);
 	}
 }
-
-
-
