@@ -1,4 +1,6 @@
 using ExpenseTrackerAPI.Data;
+using ExpenseTrackerAPI.Interfaces;
+using ExpenseTrackerAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +9,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ExpenseContext>();
+builder.Services.AddScoped<IExpenseService, ExpenseService>();
+
 
 builder.Services.AddCors(options =>
 {
