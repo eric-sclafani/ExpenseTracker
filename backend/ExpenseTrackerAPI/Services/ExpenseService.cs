@@ -1,6 +1,7 @@
 using ExpenseTrackerAPI.Data;
 using ExpenseTrackerAPI.Interfaces;
 using ExpenseTrackerAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ExpenseTrackerAPI.Services;
 
@@ -13,11 +14,6 @@ public class ExpenseService : IExpenseService
 		_context = context;
 	}
 
-	public Budget? GetBudget()
-	{
-		return _context.Budget.FirstOrDefault();
-	}
-
 	private void CalculateBudget()
 	{
 		var budget = _context.Budget.FirstOrDefault();
@@ -28,6 +24,30 @@ public class ExpenseService : IExpenseService
 			budget.DisposableIncome = budget.CashIn - cashOut ?? 0;
 			_context.SaveChanges();
 		}
+	}
+
+	private DynamicResult<T> AddEntity<T>(T Data, Action dbChange)
+	{
+		var result = new DynamicResult<T>();
+		try
+		{
+			dbChange();
+			_context.SaveChanges();
+			result.Data = Data;
+		}
+		catch (Exception e)
+		{
+			result.Success = false;
+			result.Message = e.Message;
+			result.StatusCode = 500;
+		}
+
+		return result;
+	}
+
+	public Budget? GetBudget()
+	{
+		return _context.Budget.FirstOrDefault();
 	}
 
 	public DynamicResult<Budget> UpdateCashIn(int cashIn)
@@ -75,21 +95,7 @@ public class ExpenseService : IExpenseService
 
 	public DynamicResult<FixedExpense> AddFixedExpense(FixedExpense expense)
 	{
-		var result = new DynamicResult<FixedExpense>();
-
-		try
-		{
-			_context.FixedExpense.Add(expense);
-			_context.SaveChanges();
-			result.Data = expense;
-		}
-		catch (Exception e)
-		{
-			result.Success = false;
-			result.Message = e.Message;
-			result.StatusCode = 500;
-		}
-
+		var result = AddEntity(expense, () => _context.FixedExpense.Add(expense));
 		if (result.Success)
 		{
 			CalculateBudget();
@@ -173,21 +179,7 @@ public class ExpenseService : IExpenseService
 
 	public DynamicResult<Purchase> AddPurchase(Purchase purchase)
 	{
-		var result = new DynamicResult<Purchase>();
-
-		try
-		{
-			_context.Purchase.Add(purchase);
-			_context.SaveChanges();
-			result.Data = purchase;
-		}
-		catch (Exception e)
-		{
-			result.Success = false;
-			result.Message = e.Message;
-			result.StatusCode = 500;
-		}
-
+		var result = AddEntity(purchase, () => _context.Purchase.Add(purchase));
 		return result;
 	}
 
