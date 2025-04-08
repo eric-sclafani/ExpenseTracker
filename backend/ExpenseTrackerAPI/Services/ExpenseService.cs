@@ -98,24 +98,15 @@ public class ExpenseService : IExpenseService
 		return result;
 	}
 
-	public DynamicResult<FixedExpense> UpdateFixedExpense(int id, string? category, int? amount)
+	public DynamicResult<FixedExpense> UpdateFixedExpense(FixedExpense expense)
 	{
 		var result = new DynamicResult<FixedExpense>();
 		try
 		{
-			var expense = _context.FixedExpense.Find(id);
-			if (expense is not null)
+			var record = _context.FixedExpense.Find(expense.Id);
+			if (record is not null)
 			{
-				if (category is not null)
-				{
-					expense.Category = category;
-				}
-
-				if (amount is not null)
-				{
-					expense.Amount = amount;
-				}
-
+				_context.Entry(record).CurrentValues.SetValues(expense);
 				_context.SaveChanges();
 				result.Data = expense;
 			}
@@ -123,13 +114,14 @@ public class ExpenseService : IExpenseService
 			{
 				result.Success = false;
 				result.StatusCode = 400;
-				result.Message = $"Fixed expense with id '{id}' not found";
+				result.Message = $"Fixed expense with id '{expense.Id}' not found";
 			}
 		}
 		catch (Exception e)
 		{
 			result.Success = false;
 			result.Message = e.Message;
+			result.StatusCode = 500;
 		}
 
 		if (result.Success)
@@ -163,6 +155,7 @@ public class ExpenseService : IExpenseService
 		{
 			result.Success = false;
 			result.Message = e.Message;
+			result.StatusCode = 500;
 		}
 
 		if (result.Success)
@@ -187,6 +180,64 @@ public class ExpenseService : IExpenseService
 			_context.Purchase.Add(purchase);
 			_context.SaveChanges();
 			result.Data = purchase;
+		}
+		catch (Exception e)
+		{
+			result.Success = false;
+			result.Message = e.Message;
+			result.StatusCode = 500;
+		}
+
+		return result;
+	}
+
+	public DynamicResult<Purchase> UpdatePurchase(Purchase purchase)
+	{
+		var result = new DynamicResult<Purchase>();
+		try
+		{
+			var record = _context.Purchase.Find(purchase.Id);
+			if (record is not null)
+			{
+				_context.Entry(record).CurrentValues.SetValues(purchase);
+				_context.SaveChanges();
+				result.Data = purchase;
+			}
+			else
+			{
+				result.Success = false;
+				result.StatusCode = 400;
+				result.Message = $"Purchase with id '{purchase.Id}' not found";
+			}
+		}
+		catch (Exception e)
+		{
+			result.Success = false;
+			result.Message = e.Message;
+			result.StatusCode = 500;
+		}
+
+		return result;
+	}
+
+	public DynamicResult<Purchase> DeletePurchase(int id)
+	{
+		var result = new DynamicResult<Purchase>();
+		try
+		{
+			var purchase = _context.Purchase.Find(id);
+			if (purchase is not null)
+			{
+				_context.Purchase.Remove(purchase);
+				_context.SaveChanges();
+				result.Data = purchase;
+			}
+			else
+			{
+				result.Success = false;
+				result.StatusCode = 400;
+				result.Message = $"Purchase with id '{id}' not found";
+			}
 		}
 		catch (Exception e)
 		{

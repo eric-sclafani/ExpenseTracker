@@ -17,9 +17,14 @@ public class ExpenseController : ControllerBase
 		_expenseService = expenseService;
 	}
 
-	private ObjectResult ServerError(string message)
+	private ObjectResult ApiResponse<T>(DynamicResult<T> result)
 	{
-		return StatusCode(500, $"Internal server error: {message}");
+		return result.StatusCode switch
+		{
+			400 => BadRequest(result.Message),
+			500 => StatusCode(500, $"Internal server error: {result.Message}"),
+			_ => Ok(result)
+		};
 	}
 
 	[HttpGet]
@@ -38,9 +43,7 @@ public class ExpenseController : ControllerBase
 		}
 
 		var result = _expenseService.UpdateCashIn(cashIn);
-		return result.Success
-			? Ok(result.Data)
-			: ServerError(result.Message);
+		return ApiResponse(result);
 	}
 
 	[HttpGet]
@@ -59,44 +62,27 @@ public class ExpenseController : ControllerBase
 		}
 
 		var result = _expenseService.AddFixedExpense(expense);
-		return result.Success
-			? Ok(result.Data)
-			: ServerError(result.Message);
+		return ApiResponse(result);
 	}
 
 
 	[HttpPatch]
-	public IActionResult UpdateFixedExpense(int id, string? category, int? amount)
+	public IActionResult UpdateFixedExpense(FixedExpense expense)
 	{
-		if (amount <= 0)
+		if (expense.Amount <= 0)
 		{
 			return BadRequest("Error: param 'amount' must be greater than 0");
 		}
 
-		var result = _expenseService.UpdateFixedExpense(id, category, amount);
-
-		if (result.StatusCode == 400)
-		{
-			return BadRequest(result.Message);
-		}
-		else
-		{
-			return Ok(result);
-		}
+		var result = _expenseService.UpdateFixedExpense(expense);
+		return ApiResponse(result);
 	}
 
 	[HttpDelete]
 	public IActionResult DeleteFixedExpense(int id)
 	{
 		var result = _expenseService.DeleteFixedExpense(id);
-		if (result.StatusCode == 400)
-		{
-			return BadRequest(result.Message);
-		}
-		else
-		{
-			return Ok(result);
-		}
+		return ApiResponse(result);
 	}
 
 	[HttpGet]
@@ -110,8 +96,20 @@ public class ExpenseController : ControllerBase
 	public IActionResult AddPurchase(Purchase purchase)
 	{
 		var result = _expenseService.AddPurchase(purchase);
-		return result.Success
-			? Ok(result.Data)
-			: ServerError(result.Message);
+		return ApiResponse(result);
+	}
+
+	[HttpPatch]
+	public IActionResult UpdatePurchase(Purchase purchase)
+	{
+		var result = _expenseService.UpdatePurchase(purchase);
+		return ApiResponse(result);
+	}
+	
+	[HttpDelete]
+	public IActionResult DeletePurchase(int id)
+	{
+		var result = _expenseService.DeletePurchase(id);
+		return ApiResponse(result);
 	}
 }
