@@ -1,18 +1,20 @@
 import { Component, input, model, signal } from '@angular/core';
 import { Budget } from '../../models/budget';
 import { ExpenseService } from '../../services/expense.service';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'budget',
-  imports: [FormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './budget.component.html',
   styleUrl: './budget.component.scss',
 })
 export class BudgetComponent {
   budget = model<Budget | null>(null);
-  cashIn = signal<number | null>(null);
 
+  fg = new FormGroup({
+    cashIn: new FormControl<number | null>(null),
+  });
   success: boolean | null = null;
 
   //TODO:
@@ -22,13 +24,21 @@ export class BudgetComponent {
   constructor(private _expenseService: ExpenseService) {}
 
   onSubmit() {
-    if (this.cashIn() != null) {
+    const val = this.fg.controls.cashIn.value;
+    if (val != null) {
       const budget = new Budget();
-      budget.cashIn = this.cashIn()!;
+      budget.cashIn = val!;
 
       this._expenseService.setCashIn(budget).subscribe({
-        next: () => this.setSuccess(true),
+        next: () => {
+          this.setSuccess(true);
+        },
         error: () => this.setSuccess(false),
+        complete: () => {
+          this._expenseService
+            .fetchBudget()
+            .subscribe((resp) => this.budget.set(resp.body));
+        },
       });
     }
   }

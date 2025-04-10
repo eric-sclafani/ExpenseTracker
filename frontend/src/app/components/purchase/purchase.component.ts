@@ -15,5 +15,6 @@ export class PurchaseComponent implements OnInit {
   columns = columns;
   displayCols = this.columns.map((c) => c.header);
 
+  // TODO: continue styling table https://piccalil.li/blog/styling-tables-the-modern-css-way/
   ngOnInit(): void {}
 }

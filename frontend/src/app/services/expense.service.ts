@@ -20,7 +20,7 @@ export class ExpenseService {
     return throwError(() => error);
   }
 
-  private makeGetRequest<Type>(url: string): Observable<any> {
+  private makeGetRequest<Type>(url: string): Observable<HttpResponse<Type>> {
     return this.http.get<Type>(this.baseUrl + url, { observe: 'response' });
   }
 
@@ -30,15 +30,15 @@ export class ExpenseService {
       .pipe(catchError(this.handleError));
   }
 
-  getBudgetData() {
+  fetchBudget() {
     return this.makeGetRequest<Budget>('GetBudget');
   }
 
-  getFixedExpenses() {
+  fetchFixedExpenses() {
     return this.makeGetRequest<FixedExpense[]>('GetFixedExpenses');
   }
 
-  getPurchases() {
+  fetchPurchases() {
     return this.makeGetRequest<Purchase[]>('GetPurchases');
   }
 

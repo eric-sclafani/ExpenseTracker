@@ -1,22 +1,13 @@
-<section id="app-wrapper">
-
+<main>
     <budget
         [budget]="budget()">
     </budget>
 
-    <div id="fixed-expenses">
-        <div class="header">Fixed Expenses</div>
-        @for(exp of fixedExpenses(); track exp.id){
-            <div class="fixed-exp-item">
-                <span class="label">{{exp.category}}:</span>
-                <span>${{exp.amount}}</span>
-            </div> 
-        }
-    </div>
+    <fixed-expense
+        [fixedExpenses]="fixedExpenses()">
+    </fixed-expense>
 
     <purchase-table
         [purchases]="purchases()">
-    </purchase-table>
-
-    
-</section>
+    </purchase-table> 
+</main>

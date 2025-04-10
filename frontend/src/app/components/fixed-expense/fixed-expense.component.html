@@ -1,0 +1,32 @@
+
+<div id="fixed-expenses">
+    @for(exp of fixedExpenses(); track exp.id){
+    <div class="fixed-exp-item">
+        <span class="label">{{exp.category}}:</span>
+        <span>${{exp.amount}}</span>
+    </div>
+    }
+</div>
+
+<form [formGroup]="fg" id="fix-exp-form">
+
+    <div class="form-input">
+        <label for="category">Category: </label>
+        <input id="category" type="text">
+    </div>
+    <div class="form-input">
+        <label for="amount">Amount: </label>
+        <input id="amount" type="number">
+    </div>
+
+    <button 
+        type="button" 
+        (click)="onSubmit()">
+        Submit
+    </button>
+    
+</form>
+
+
+
+

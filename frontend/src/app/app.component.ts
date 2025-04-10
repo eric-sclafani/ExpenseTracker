@@ -6,12 +6,12 @@ import { Budget } from './models/budget';
 import { Purchase } from './models/purchase';
 import { PurchaseComponent } from './components/purchase/purchase.component';
 import { BudgetComponent } from './components/budget/budget.component';
+import { FixedExpenseComponent } from './components/fixed-expense/fixed-expense.component';
 
 @Component({
   selector: 'app-root',
-  imports: [PurchaseComponent, BudgetComponent],
+  imports: [PurchaseComponent, BudgetComponent, FixedExpenseComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
   budget = signal<Budget | null>(null);
@@ -22,16 +22,16 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this._expenseService
-      .getBudgetData()
+      .fetchBudget()
       .pipe(
         mergeMap((resp) => {
           this.budget.set(resp.body);
-          return this._expenseService.getFixedExpenses();
+          return this._expenseService.fetchFixedExpenses();
         }),
 
         mergeMap((resp) => {
           this.fixedExpenses.set(resp.body!);
-          return this._expenseService.getPurchases();
+          return this._expenseService.fetchPurchases();
         })
       )
       .subscribe((resp) => this.purchases.set(resp.body!));

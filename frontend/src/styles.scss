@@ -4,6 +4,13 @@
     font-size: 18px
 }
 
+main {
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+}
+
 button,
 input {
     font-size: 14px;
