@@ -6,10 +6,10 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
 @Component({
   selector: 'purchase-table',
   imports: [DatePipe, CurrencyPipe],
-  templateUrl: './purchase-table.component.html',
-  styleUrl: './purchase-table.component.scss',
+  templateUrl: './purchase.component.html',
+  styleUrl: './purchase.component.scss',
 })
-export class PurchaseTableComponent implements OnInit {
+export class PurchaseComponent implements OnInit {
   purchases = input<Purchase[]>([]);
 
   columns = columns;

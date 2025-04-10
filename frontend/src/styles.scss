@@ -1,4 +1,18 @@
 * {
     box-sizing: border-box;
     margin: 0px;
+    font-size: 18px
+}
+
+button,
+input {
+    font-size: 14px;
+}
+
+.success {
+    color: rgb(28, 153, 42)
+}
+
+.danger {
+    color: rgb(187, 33, 36)
 }

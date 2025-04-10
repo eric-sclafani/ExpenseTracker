@@ -4,12 +4,12 @@ import { mergeMap } from 'rxjs';
 import { FixedExpense } from './models/fixedExpense';
 import { Budget } from './models/budget';
 import { Purchase } from './models/purchase';
-import { KeyValuePipe } from '@angular/common';
-import { PurchaseTableComponent } from './components/purchase-table/purchase-table.component';
+import { PurchaseComponent } from './components/purchase/purchase.component';
+import { BudgetComponent } from './components/budget/budget.component';
 
 @Component({
   selector: 'app-root',
-  imports: [KeyValuePipe, PurchaseTableComponent],
+  imports: [PurchaseComponent, BudgetComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })

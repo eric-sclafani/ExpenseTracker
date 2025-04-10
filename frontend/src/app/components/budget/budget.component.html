@@ -1,0 +1,28 @@
+<div id="budget">
+
+    <div id="budget-items">
+        <div class="budget-item">
+            <span class="label">Cash In:</span>
+            ${{budget()?.cashIn}}
+        </div>
+
+        <div class="budget-item cash-out">
+            <span class="label">Cash Out:</span>
+            ${{budget()?.cashOut}}
+        </div>
+
+        <div class="budget-item disp-income">
+            <span class="label">Disposable Income:</span>
+            ${{budget()?.disposableIncome}}
+        </div>
+        
+    </div>
+
+    <div id="budget-form">
+        <span>Modify Budget</span>
+        <input [(ngModel)]="cashIn" type="number" min="0" pattern="\d*" title="Only numbers are allowed">
+        <button type="button" (click)="onSubmit()">Submit</button>
+        <div class="success" [style.display]="success ? 'block' : 'none'">Success!</div>
+        <div class="danger" [style.display]="success == false? 'block' : 'none'">Failed!</div>
+    </div>
+</div>

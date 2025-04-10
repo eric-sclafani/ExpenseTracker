@@ -1,4 +1,4 @@
-export interface Budget {
+export class Budget {
   id: number;
   cashIn: number;
   cashOut: number;

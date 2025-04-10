@@ -35,14 +35,19 @@ public class ExpenseController : ControllerBase
 	}
 
 	[HttpPost]
-	public IActionResult SetCashIn(int cashIn)
+	public IActionResult SetCashIn(Budget budget)
 	{
-		if (cashIn <= 0)
+		if (budget.CashIn <= 0)
 		{
-			return BadRequest("param 'cashIn' must be greater than 0");
+			var resp = new DynamicResult<Budget>
+			{
+				StatusCode = 400,
+				Message = "param 'cashIn' must be greater than 0"
+			};
+			return ApiResponse(resp);
 		}
 
-		var result = _expenseService.UpdateCashIn(cashIn);
+		var result = _expenseService.UpdateCashIn(budget.CashIn);
 		return ApiResponse(result);
 	}
 
@@ -58,7 +63,12 @@ public class ExpenseController : ControllerBase
 	{
 		if (expense.Amount <= 0)
 		{
-			return BadRequest("Error: param 'amount' must be greater than 0");
+			var resp = new DynamicResult<FixedExpense>
+			{
+				StatusCode = 400,
+				Message = "param 'amount' must be greater than 0"
+			};
+			return ApiResponse(resp);
 		}
 
 		var result = _expenseService.AddFixedExpense(expense);
@@ -71,7 +81,12 @@ public class ExpenseController : ControllerBase
 	{
 		if (expense.Amount <= 0)
 		{
-			return BadRequest("Error: param 'amount' must be greater than 0");
+			var resp = new DynamicResult<FixedExpense>
+			{
+				StatusCode = 400,
+				Message = "param 'amount' must be greater than 0"
+			};
+			return ApiResponse(resp);
 		}
 
 		var result = _expenseService.UpdateFixedExpense(expense);
@@ -95,6 +110,16 @@ public class ExpenseController : ControllerBase
 	[HttpPost]
 	public IActionResult AddPurchase(Purchase purchase)
 	{
+		if (purchase.Amount <= 0)
+		{
+			var resp = new DynamicResult<Purchase>
+			{
+				StatusCode = 400,
+				Message = "param 'amount' must be greater than 0"
+			};
+			return ApiResponse(resp);
+		}
+
 		var result = _expenseService.AddPurchase(purchase);
 		return ApiResponse(result);
 	}
@@ -102,10 +127,20 @@ public class ExpenseController : ControllerBase
 	[HttpPatch]
 	public IActionResult UpdatePurchase(Purchase purchase)
 	{
+		if (purchase.Amount <= 0)
+		{
+			var resp = new DynamicResult<Purchase>
+			{
+				StatusCode = 400,
+				Message = "param 'amount' must be greater than 0"
+			};
+			return ApiResponse(resp);
+		}
+
 		var result = _expenseService.UpdatePurchase(purchase);
 		return ApiResponse(result);
 	}
-	
+
 	[HttpDelete]
 	public IActionResult DeletePurchase(int id)
 	{
