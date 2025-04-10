@@ -21,10 +21,10 @@ export class ExpenseService {
   }
 
   getFixedExpenses() {
-    return this.makeGetRequest<FixedExpense>('GetFixedExpenses');
+    return this.makeGetRequest<FixedExpense[]>('GetFixedExpenses');
   }
 
   getPurchases() {
-    return this.makeGetRequest<Purchase>('GetPurchases');
+    return this.makeGetRequest<Purchase[]>('GetPurchases');
   }
 }

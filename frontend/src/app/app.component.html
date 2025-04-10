@@ -1,3 +1,27 @@
-<div id="app-wrapper">
+<section id="app-wrapper">
+    <div id="budget-items">
+        <div class="header">Budget</div>
+        @for(bud of budget()|keyvalue; track $index){
+            @if(bud.key != 'id'){
+                <div class="budget-item">
+                    <span class="label">{{bud.key}}</span>
+                    ${{bud.value}}
+                </div>
+            }
+        }
+    </div>
 
-</div>
+    <div id="fixed-expenses">
+        <div class="header">Fixed Expenses</div>
+        @for(exp of fixedExpenses(); track exp.id){
+            <div class="fixed-exp-item">
+                <span class="label">{{exp.category}}:</span>
+                <span>${{exp.amount}}</span>
+            </div> 
+        }
+    </div>
+
+    <purchase-table
+        [purchases]="purchases()">
+    </purchase-table>
+</section>

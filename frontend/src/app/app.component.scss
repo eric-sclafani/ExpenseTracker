@@ -1,0 +1,26 @@
+#fixed-expenses,
+#purchases,
+#budget-items {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border: dotted 1px;
+    padding: 5px;
+    margin: 20px;
+    max-width: 20vw;
+}
+
+.fixed-exp-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.label {
+    font-weight: bold;
+
+}
+
+.header {
+    text-decoration: underline;
+}

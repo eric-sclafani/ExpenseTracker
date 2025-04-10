@@ -1,0 +1,28 @@
+<div id="purchases">
+    <table id="purchase-table">
+        <thead>
+            <tr>
+               @for (col of displayCols; track $index){
+                    <th class="col-header">{{col}}</th>
+               } 
+            </tr>
+        </thead>
+        <tbody>
+            @for (purchase of purchases(); track purchase.id){
+                <tr>
+                    @for (col of columns; track $index){
+                        @if (col.type == 'date'){
+                            <td>{{col.cell(purchase) | date: 'dd/MM/yyyy'}}</td>
+                        }
+                        @else if (col.type == 'curr'){
+                            <td>{{col.cell(purchase) | currency }} </td>
+                        }
+                        @else {
+                            <td>{{col.cell(purchase)}}</td>
+                        }
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

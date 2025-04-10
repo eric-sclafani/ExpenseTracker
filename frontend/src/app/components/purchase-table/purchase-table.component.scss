@@ -1,0 +1,30 @@
+#purchases {
+    margin: 10px;
+}
+
+
+table {
+    border-collapse: separate;
+    border-left: 0px;
+    border-radius: 4px;
+    border-spacing: 0px;
+    text-align: left;
+
+}
+
+
+
+tbody tr:hover {
+    background-color: lightgoldenrodyellow;
+}
+
+thead {
+    border-block-end: 2px solid;
+    background: whitesmoke;
+}
+
+th,
+td {
+    border: 1px solid lightgrey;
+    padding: 0.25rem 0.75rem 0.25rem 0.5rem;
+}
