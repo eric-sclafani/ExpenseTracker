@@ -1,4 +1,36 @@
 <div id="purchases">
+
+    <form [formGroup]="fg" id="add-purchase-form">
+
+        <div class="form-input">
+            <label for="date">Date: </label>
+            <input id="date" type="date" formControlName="date">
+        </div>
+        <div class="form-input">
+            <label for="description">description: </label>
+            <input id="description" type="text" formControlName="description">
+        </div>
+        <div class="form-input">
+            <label for="vendor">vendor: </label>
+            <input id="vendor" type="text" formControlName="vendor">
+        </div>
+        <div class="form-input">
+            <label for="tag">Tag: </label>
+            <input id="tag" type="text" formControlName="tag">
+        </div>
+        <div class="form-input">
+            <label for="type">Type: </label>
+            <input id="type" type="text" formControlName="type">
+        </div>
+        <div class="form-input">
+            <label for="amount">Amount: </label>
+            <input id="amount" type="number" formControlName="amount">
+        </div>
+
+        <button type="button" (click)="onSubmit()">Submit</button>
+
+    </form>
+
     <table id="purchase-table">
         <thead>
             <tr>

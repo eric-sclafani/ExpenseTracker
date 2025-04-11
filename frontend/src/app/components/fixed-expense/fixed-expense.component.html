@@ -4,6 +4,7 @@
     <div class="fixed-exp-item">
         <span class="label">{{exp.category}}:</span>
         <span>${{exp.amount}}</span>
+        <button (click)="onDelete(exp.id)">Delete</button>
     </div>
     }
 </div>
@@ -12,11 +13,11 @@
 
     <div class="form-input">
         <label for="category">Category: </label>
-        <input id="category" type="text">
+        <input id="category" type="text" formControlName="category">
     </div>
     <div class="form-input">
         <label for="amount">Amount: </label>
-        <input id="amount" type="number">
+        <input id="amount" type="number" formControlName="amount">
     </div>
 
     <button 

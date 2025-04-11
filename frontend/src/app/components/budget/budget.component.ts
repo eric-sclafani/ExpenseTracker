@@ -1,4 +1,4 @@
-import { Component, input, model, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { Budget } from '../../models/budget';
 import { ExpenseService } from '../../services/expense.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -9,8 +9,8 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
   templateUrl: './budget.component.html',
   styleUrl: './budget.component.scss',
 })
-export class BudgetComponent {
-  budget = model<Budget | null>(null);
+export class BudgetComponent implements OnInit {
+  budget = signal<Budget | null>(null);
 
   fg = new FormGroup({
     cashIn: new FormControl<number | null>(null),
@@ -23,6 +23,10 @@ export class BudgetComponent {
 
   constructor(private _expenseService: ExpenseService) {}
 
+  ngOnInit(): void {
+    this.budget = this._expenseService.budget;
+  }
+
   onSubmit() {
     const val = this.fg.controls.cashIn.value;
     if (val != null) {
@@ -30,21 +34,13 @@ export class BudgetComponent {
       budget.cashIn = val!;
 
       this._expenseService.setCashIn(budget).subscribe({
-        next: () => {
-          this.setSuccess(true);
-        },
-        error: () => this.setSuccess(false),
+        next: (d) => console.log(d),
+        error: (e) => console.log(e),
         complete: () => {
-          this._expenseService
-            .fetchBudget()
-            .subscribe((resp) => this.budget.set(resp.body));
+          this._expenseService.fetchAllData();
+          this.fg.reset();
         },
       });
     }
-  }
-
-  private setSuccess(val: boolean) {
-    this.success = val;
-    setTimeout(() => (this.success = null), 2000);
   }
 }

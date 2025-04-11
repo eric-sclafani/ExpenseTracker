@@ -1,6 +1,6 @@
 export interface Purchase {
   id: number;
-  date: string;
+  date: Date;
   description: string | null;
   vendor: string | null;
   tag: string | null;

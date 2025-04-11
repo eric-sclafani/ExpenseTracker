@@ -14,26 +14,9 @@ import { FixedExpenseComponent } from './components/fixed-expense/fixed-expense.
   templateUrl: './app.component.html',
 })
 export class AppComponent implements OnInit {
-  budget = signal<Budget | null>(null);
-  fixedExpenses = signal<FixedExpense[]>([]);
-  purchases = signal<Purchase[]>([]);
-
   constructor(private _expenseService: ExpenseService) {}
 
   ngOnInit(): void {
-    this._expenseService
-      .fetchBudget()
-      .pipe(
-        mergeMap((resp) => {
-          this.budget.set(resp.body);
-          return this._expenseService.fetchFixedExpenses();
-        }),
-
-        mergeMap((resp) => {
-          this.fixedExpenses.set(resp.body!);
-          return this._expenseService.fetchPurchases();
-        })
-      )
-      .subscribe((resp) => this.purchases.set(resp.body!));
+    this._expenseService.fetchAllData();
   }
 }

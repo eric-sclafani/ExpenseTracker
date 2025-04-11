@@ -22,7 +22,5 @@
         <span>Modify Budget</span>
         <input formControlName="cashIn" type="number" min="0" pattern="\d*" title="Only numbers are allowed">
         <button type="button" (click)="onSubmit()">Submit</button>
-        <div class="success" [style.display]="success ? 'block' : 'none'">Success!</div>
-        <div class="danger" [style.display]="success == false? 'block' : 'none'">Failed!</div>
     </form>
 </div>
