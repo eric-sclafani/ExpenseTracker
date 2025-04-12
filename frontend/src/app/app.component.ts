@@ -1,9 +1,5 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { ExpenseService } from './services/expense.service';
-import { mergeMap } from 'rxjs';
-import { FixedExpense } from './models/fixedExpense';
-import { Budget } from './models/budget';
-import { Purchase } from './models/purchase';
 import { PurchaseComponent } from './components/purchase/purchase.component';
 import { BudgetComponent } from './components/budget/budget.component';
 import { FixedExpenseComponent } from './components/fixed-expense/fixed-expense.component';

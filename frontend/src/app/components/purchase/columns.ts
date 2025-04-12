@@ -1,11 +1,5 @@
+import { Column } from '../../models/column';
 import { Purchase } from '../../models/purchase';
-
-export interface Column {
-  columnDef: string;
-  header: string;
-  type?: string;
-  cell: Function;
-}
 
 export const columns: Column[] = [
   {

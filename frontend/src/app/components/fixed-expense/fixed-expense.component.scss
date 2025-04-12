@@ -1,14 +1,36 @@
-#fixed-expenses {
+.fixed-expenses-wrapper {
     display: flex;
     flex-direction: column;
     gap: 10px;
     border: dotted 1px;
-    padding: 5px;
-    max-width: 20vw;
+    border-radius: 15px;
+    padding: 10px;
+    max-width: 40vw;
 }
 
-.fixed-exp-item {
+.header-note {
+    font-style: italic;
+    font-size: 16px;
+}
+
+.highlight {
+    background-color: lightgoldenrodyellow;
+}
+
+.container {
     display: flex;
-    align-items: center;
+    flex-direction: column;
     gap: 5px;
+}
+
+.fix-exp-item {
+    display: flex;
+    padding: 10px;
+    border-radius: 15px;
+
+}
+
+.amount {
+    margin-left: auto;
+
 }

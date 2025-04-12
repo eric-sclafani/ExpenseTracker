@@ -1,15 +1,37 @@
+<div class="fixed-expenses-wrapper">
 
-<div id="fixed-expenses">
-    @for(exp of fixedExpenses(); track exp.id){
-    <div class="fixed-exp-item">
-        <span class="label">{{exp.category}}:</span>
-        <span>${{exp.amount}}</span>
-        <button (click)="onDelete(exp.id)">Delete</button>
+    <div class="fixexp-header">
+        <h4>Fixed Monthly Expenses</h4>
+        <div class="header-note">(* indicates note on hover)</div>
     </div>
-    }
+
+   
+    <div class="container">
+
+        @for(exp of fixedExpenses(); track exp.id){
+            <div 
+                (mouseover)="onFixedExpHover(exp.id)"
+                (mouseleave)="resetHoverId()"
+                [ngClass]="{'highlight' : exp.id == currentHoveredId}"
+                
+                class="fix-exp-item"
+                >
+                <div class="category">
+                    {{exp.note != null ? exp.category+'*' : exp.category}}:
+                </div>
+
+                <div class="amount">
+                    {{exp.amount | currency}}
+                </div>
+            </div>
+        }
+        
+    </div>
+
+    
 </div>
 
-<form [formGroup]="fg" id="fix-exp-form">
+<!-- <form [formGroup]="fg" class="fix-exp-form">
 
     <div class="form-input">
         <label for="category">Category: </label>
@@ -19,6 +41,10 @@
         <label for="amount">Amount: </label>
         <input id="amount" type="number" formControlName="amount">
     </div>
+    <div class="form-input">
+        <label for="note">Note: </label>
+        <input id="note" type="text" formControlName="note">
+    </div>
 
     <button 
         type="button" 
@@ -26,7 +52,7 @@
         Submit
     </button>
     
-</form>
+</form> -->
 
 
 

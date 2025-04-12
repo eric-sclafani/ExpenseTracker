@@ -2,10 +2,11 @@ import { Component, OnInit, signal } from '@angular/core';
 import { FixedExpense } from '../../models/fixedExpense';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ExpenseService } from '../../services/expense.service';
+import { CurrencyPipe, NgClass } from '@angular/common';
 
 @Component({
   selector: 'fixed-expense',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CurrencyPipe, NgClass],
   templateUrl: './fixed-expense.component.html',
   styleUrl: './fixed-expense.component.scss',
 })
@@ -14,14 +15,24 @@ export class FixedExpenseComponent implements OnInit {
   fg = new FormGroup({
     category: new FormControl<string | null>(null),
     amount: new FormControl<number | null>(null),
+    note: new FormControl<string | null>(null),
   });
 
   fixedExpenses = signal<FixedExpense[]>([]);
+  currentHoveredId: number;
 
   constructor(private _expenseService: ExpenseService) {}
 
   ngOnInit(): void {
     this.fixedExpenses = this._expenseService.fixedExpenses;
+  }
+
+  onFixedExpHover(id: number) {
+    this.currentHoveredId = id;
+  }
+
+  resetHoverId() {
+    this.currentHoveredId = 0;
   }
 
   onDelete(id: number) {
@@ -30,12 +41,6 @@ export class FixedExpenseComponent implements OnInit {
         this._expenseService.fetchAllData();
       },
     });
-  }
-
-  onUpdate(id: number) {
-    const fixedExp = this.fixedExpenses().find((f) => f.id == id);
-    if (fixedExp) {
-    }
   }
 
   onSubmit() {

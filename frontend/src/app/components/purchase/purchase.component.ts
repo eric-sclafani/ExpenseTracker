@@ -15,7 +15,6 @@ export class PurchaseComponent implements OnInit {
   purchases = signal<Purchase[]>([]);
 
   columns = columns;
-  displayCols = this.columns.map((c) => c.header);
 
   fg = new FormGroup({
     date: new FormControl(new Date()),
@@ -29,6 +28,7 @@ export class PurchaseComponent implements OnInit {
   constructor(private _expenseService: ExpenseService) {}
 
   // TODO: continue styling table https://piccalil.li/blog/styling-tables-the-modern-css-way/
+  // add deletion and updating
   ngOnInit(): void {
     this.purchases = this._expenseService.purchases;
   }
