@@ -174,7 +174,7 @@ public class ExpenseService : IExpenseService
 
 	public IEnumerable<Purchase> GetPurchases()
 	{
-		return _context.Purchase.ToList();
+		return _context.Purchase.OrderBy(p => p.Date);
 	}
 
 	public DynamicResult<Purchase> AddPurchase(Purchase purchase)

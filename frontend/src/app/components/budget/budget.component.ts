@@ -2,10 +2,11 @@ import { Component, OnInit, signal } from '@angular/core';
 import { Budget } from '../../models/budget';
 import { ExpenseService } from '../../services/expense.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { CurrencyPipe } from '@angular/common';
 
 @Component({
   selector: 'budget',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CurrencyPipe],
   templateUrl: './budget.component.html',
   styleUrl: './budget.component.scss',
 })

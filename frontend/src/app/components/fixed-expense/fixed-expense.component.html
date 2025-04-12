@@ -1,10 +1,7 @@
-<div class="fixed-expenses-wrapper">
+<fieldset class="fixed-expenses-wrapper">
+    <legend><h4>Fixed Monthly Expenses</h4></legend>
 
-    <div class="fixexp-header">
-        <h4>Fixed Monthly Expenses</h4>
-        <div class="header-note">(* indicates note on hover)</div>
-    </div>
-
+    <div class="header-note">(* indicates note on hover)</div>
    
     <div class="container">
 
@@ -12,7 +9,6 @@
             <div 
                 (mouseover)="onFixedExpHover(exp.id)"
                 (mouseleave)="resetHoverId()"
-                [ngClass]="{'highlight' : exp.id == currentHoveredId}"
                 
                 class="fix-exp-item"
                 >
@@ -29,7 +25,7 @@
     </div>
 
     
-</div>
+</fieldset>
 
 <!-- <form [formGroup]="fg" class="fix-exp-form">
 
