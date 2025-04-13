@@ -92,4 +92,12 @@ export class ExpenseService {
   addPurchase(purchase: Purchase) {
     return this.post('AddPurchase', purchase);
   }
+
+  updatePurchase(purchase: Purchase) {
+    return this.patch('UpdatePurchase', purchase);
+  }
+
+  deletePurchase(id: number) {
+    return this.delete<Purchase>(`DeletePurchase?id=${id}`);
+  }
 }

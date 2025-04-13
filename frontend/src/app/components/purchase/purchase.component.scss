@@ -1,5 +1,6 @@
 .purchases {
-    margin-top: 10px
+    margin-top: 10px;
+
 }
 
 table {
@@ -10,10 +11,6 @@ table {
     text-align: left;
 }
 
-tbody tr:hover {
-    background-color: lightgoldenrodyellow;
-}
-
 thead {
     border-block-end: 2px solid;
     background: whitesmoke;
@@ -22,9 +19,17 @@ thead {
 th,
 td {
     border: 1px solid lightgrey;
-    padding: 0.25rem 0.75rem 0.25rem 0.5rem;
+    padding: 0.5rem;
 }
 
 td input {
     width: 130px
+}
+
+
+
+.row-btns {
+    display: flex;
+    gap: 5px;
+    margin: 10px 0 0 5px
 }

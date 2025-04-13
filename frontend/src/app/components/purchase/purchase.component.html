@@ -1,37 +1,70 @@
-<div class="purchases">
+<form [formGroup]="fg" class="purchases">
 
     <table class="purchase-table">
         <thead>
             <tr>
-               @for (col of columns; track $index){
-                    <th class="col-header">{{col.header}}</th>
-               } 
+                @for (col of columns; track $index){
+                <th class="col-header">{{col.header}}</th>
+                }
             </tr>
         </thead>
         <tbody>
             @for (purchase of purchases(); track purchase.id){
-                <tr>
-                    @for (col of columns; track $index){
-                        @if (col.type == 'date'){
-                            <td>{{col.cell(purchase) | date: 'dd/MM/yyyy'}}</td>
-                        }
-                        @else if (col.type == 'curr'){
-                            <td>{{col.cell(purchase) | currency }} </td>
-                        }
-                        @else {
-                            <td>{{col.cell(purchase)}}</td>
+                <tr (dblclick)="onRowDblClick(purchase)" formGroupName="update">
+
+                    @if(purchase.id == currentEditingId()){
+                        <td><input type="date" formControlName="date"></td>
+                        <td><input type="text" formControlName="descr"></td>
+                        <td><input type="text" formControlName="vendor"></td>
+                        <td><input type="text" formControlName="tag"></td>
+                        <td><input type="text" formControlName="type"></td>
+                        <td><input type="number" formControlName="amount"></td>
+                    }
+                    @else {
+                        @for (col of columns; track $index){
+                            @if (col.type == 'date'){
+                                <td>{{col.cell(purchase) | date: 'MM/dd/yyyy'}}</td>
+                            }
+                            @else if (col.type == 'curr'){
+                                <td>{{col.cell(purchase) | currency }} </td>
+                            }
+                            @else {
+                                <td>{{col.cell(purchase)}}</td>
+                            }
                         }
                     }
+                    <div class="row-btns">
+                        @if (purchase.id == currentEditingId()){
+                            <button (click)="onRowModify(purchase.id)">
+                                <i class="fa-solid fa-floppy-disk"></i>
+                            </button>
+                        }
+                        <button (click)="onDelete(purchase)">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                    
                 </tr>
+            
+
             }
-            <tr>
-                <td><input type="date"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="text"></td>
-                <td><input type="number"></td>
+            <tr formGroupName="add">
+                <td><input type="date" formControlName="date"></td>
+                <td><input type="text" formControlName="descr"></td>
+                <td><input type="text" formControlName="vendor"></td>
+                <td><input type="text" formControlName="tag"></td>
+                <td><input type="text" formControlName="type"></td>
+                <td>
+                    <input type="number" formControlName="amount" (keydown.enter)="onRowSubmit()">
+                </td>
+                <button 
+                    class="row-btns" 
+                    (click)="onRowSubmit()">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
             </tr>
+
         </tbody>
     </table>
-</div>
+</form>
+

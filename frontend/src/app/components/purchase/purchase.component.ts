@@ -3,7 +3,13 @@ import { Purchase } from '../../models/purchase';
 import { columns } from './columns';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { ExpenseService } from '../../services/expense.service';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 
 @Component({
   selector: 'purchase-table',
@@ -16,30 +22,63 @@ export class PurchaseComponent implements OnInit {
 
   columns = columns;
 
-  fg = new FormGroup({
-    date: new FormControl(new Date()),
-    description: new FormControl<string | null>(''),
-    vendor: new FormControl<string | null>(''),
-    tag: new FormControl<string | null>(''),
-    type: new FormControl<string | null>(''),
-    amount: new FormControl(0),
-  });
+  currentEditingId = signal<number | null>(null);
 
-  constructor(private _expenseService: ExpenseService) {}
+  fg: FormGroup;
 
-  // TODO: continue styling table https://piccalil.li/blog/styling-tables-the-modern-css-way/
-  // add deletion and updating
+  constructor(
+    private _expenseService: ExpenseService,
+    private _fb: FormBuilder
+  ) {}
+
   ngOnInit(): void {
+    this.initFormGroup();
     this.purchases = this._expenseService.purchases;
   }
 
-  onSubmit() {
-    const purchase = this.fg.value as Purchase;
-    this._expenseService.addPurchase(purchase).subscribe({
-      complete: () => {
-        this._expenseService.fetchAllData();
-        this.fg.reset();
-      },
+  onRowDblClick(purchase: Purchase) {
+    this.currentEditingId.set(purchase.id);
+  }
+
+  onRowModify(id: number) {
+    const fg = this.fg.get('update') as FormGroup;
+    const purchase = fg.value as Purchase;
+    purchase.id = id;
+
+    this._expenseService.updatePurchase(purchase).subscribe(() => {
+      this.currentEditingId.set(null);
+      this._expenseService.fetchAllData();
+      fg.reset();
+    });
+  }
+
+  onDelete(purchase: Purchase) {
+    this._expenseService.deletePurchase(purchase.id).subscribe(() => {
+      this._expenseService.fetchAllData();
+    });
+  }
+
+  onRowSubmit() {
+    const fg = this.fg.get('add') as FormGroup;
+    this._expenseService.addPurchase(fg.value).subscribe(() => {
+      this._expenseService.fetchAllData();
+      fg.reset();
+    });
+  }
+
+  private initFormGroup() {
+    const fg = this._fb.group({
+      date: new FormControl(new Date(), Validators.required),
+      descr: new FormControl('', Validators.required),
+      vendor: new FormControl('', Validators.required),
+      tag: new FormControl('', Validators.required),
+      type: new FormControl(''),
+      amount: new FormControl(0, Validators.required),
+    });
+
+    this.fg = this._fb.group({
+      add: fg,
+      update: fg,
     });
   }
 }

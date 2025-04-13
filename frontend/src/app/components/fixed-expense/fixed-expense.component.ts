@@ -2,11 +2,11 @@ import { Component, OnInit, signal } from '@angular/core';
 import { FixedExpense } from '../../models/fixedExpense';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ExpenseService } from '../../services/expense.service';
-import { CurrencyPipe, NgClass } from '@angular/common';
+import { CurrencyPipe } from '@angular/common';
 
 @Component({
   selector: 'fixed-expense',
-  imports: [ReactiveFormsModule, CurrencyPipe, NgClass],
+  imports: [ReactiveFormsModule, CurrencyPipe],
   templateUrl: './fixed-expense.component.html',
   styleUrl: './fixed-expense.component.scss',
 })
