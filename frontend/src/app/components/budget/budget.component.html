@@ -1,11 +1,27 @@
-<fieldset class="budget">
+<fieldset class="budget box-shadow">
     <legend><h4>Budget</h4></legend>
     <div class="budget-items">
-        <div class="budget-item">
-            <div class="label">Cash In:</div>
-            <div class="value">{{budget()?.cashIn | currency}}</div>
-        </div>
-
+        @if(isEditing){
+            <div class="budget-item">
+                <input type="number" [(ngModel)]="cashIn">
+                
+                <button (click)="onCancel()" title="Cancel Changes">
+                    <i class="fa-solid fa-ban"></i>
+                </button>
+                
+                <button (click)="onSubmit()" title="Save">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                </button>
+            </div>
+           
+        }
+        @else {
+            <div class="budget-item cashIn" (dblclick)="onDoubleClick()">
+                <div class="label">Cash In:</div>
+                <div class="value">{{budget()?.cashIn | currency}}</div>
+            </div>
+        }
+        
         <div class="budget-item">
             <div class="label">Cash Out:</div>
             <div class="value">{{budget()?.cashOut | currency}}</div>

@@ -1,4 +1,4 @@
-<fieldset class="fixed-expenses-wrapper">
+<fieldset class="fixed-expenses-wrapper box-shadow">
     <legend><h4>Fixed Monthly Expenses</h4></legend>
 
     <div class="header-note">(* indicates note on hover)</div>
@@ -7,18 +7,47 @@
 
         @for(exp of fixedExpenses(); track exp.id){
             <div 
-                (mouseover)="onFixedExpHover(exp.id)"
-                (mouseleave)="resetHoverId()"
+                (dblclick)="onDoubleClick(exp.id)"
                 
                 class="fix-exp-item"
                 >
-                <div class="category">
-                    {{exp.note != null ? exp.category+'*' : exp.category}}:
-                </div>
 
-                <div class="amount">
-                    {{exp.amount | currency}}
-                </div>
+                @if(exp.id == editingId()){
+                    <form [formGroup]="fg">
+                        <div class="form-input">
+                            <label for="category">Category: </label>
+                            <input id="category" type="text" formControlName="category">
+                        </div>
+                        <div class="form-input">
+                            <label for="amount">Amount: </label>
+                            <input id="amount" type="number" formControlName="amount">
+                        </div>
+                        <div class="form-input">
+                            <label for="note">Note: </label>
+                            <input id="note" type="text" formControlName="note">
+                        </div>
+                        
+                        <button (click)="onCancel()" title="Cancel Changes" type="button">
+                            <i class="fa-solid fa-ban"></i>
+                        </button>
+                        
+                        <button (click)="onSubmit()" title="Save" type="button">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                        </button>
+                    </form>
+                    
+                }
+
+                @else {
+                    <div class="category">
+                        {{exp.note != null ? exp.category+'*' : exp.category}}:
+                    </div>
+                    
+                    <div class="amount">
+                        {{exp.amount | currency}}
+                    </div>
+                }
+                
             </div>
         }
         
@@ -27,28 +56,7 @@
     
 </fieldset>
 
-<!-- <form [formGroup]="fg" class="fix-exp-form">
 
-    <div class="form-input">
-        <label for="category">Category: </label>
-        <input id="category" type="text" formControlName="category">
-    </div>
-    <div class="form-input">
-        <label for="amount">Amount: </label>
-        <input id="amount" type="number" formControlName="amount">
-    </div>
-    <div class="form-input">
-        <label for="note">Note: </label>
-        <input id="note" type="text" formControlName="note">
-    </div>
-
-    <button 
-        type="button" 
-        (click)="onSubmit()">
-        Submit
-    </button>
-    
-</form> -->
 
 
 

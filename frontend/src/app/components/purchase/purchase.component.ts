@@ -38,6 +38,13 @@ export class PurchaseComponent implements OnInit {
 
   onRowDblClick(purchase: Purchase) {
     this.currentEditingId.set(purchase.id);
+    const fg = this.fg.get('update') as FormGroup;
+    fg.patchValue(purchase);
+  }
+
+  onCancel() {
+    this.fg.get('update')?.reset();
+    this.currentEditingId.set(null);
   }
 
   onRowModify(id: number) {
@@ -59,26 +66,39 @@ export class PurchaseComponent implements OnInit {
   }
 
   onRowSubmit() {
-    const fg = this.fg.get('add') as FormGroup;
-    this._expenseService.addPurchase(fg.value).subscribe(() => {
+    const fg = this.fg.get('add')?.value;
+    const purchase = {
+      date: fg.newDate,
+      description: fg.newDescr,
+      vendor: fg.newVendor,
+      tag: fg.newTag,
+      type: fg.newTag,
+      amount: fg.newAmount,
+    } as Purchase;
+    this._expenseService.addPurchase(purchase).subscribe(() => {
       this._expenseService.fetchAllData();
-      fg.reset();
+      this.fg.get('add')?.reset();
     });
   }
 
   private initFormGroup() {
-    const fg = this._fb.group({
-      date: new FormControl(new Date(), Validators.required),
-      descr: new FormControl('', Validators.required),
-      vendor: new FormControl('', Validators.required),
-      tag: new FormControl('', Validators.required),
-      type: new FormControl(''),
-      amount: new FormControl(0, Validators.required),
-    });
-
     this.fg = this._fb.group({
-      add: fg,
-      update: fg,
+      add: this._fb.group({
+        newDate: new FormControl(new Date(), Validators.required),
+        newDescr: new FormControl('', Validators.required),
+        newVendor: new FormControl('', Validators.required),
+        newTag: new FormControl('', Validators.required),
+        newType: new FormControl(''),
+        newAmount: new FormControl<number | null>(null, Validators.required),
+      }),
+      update: this._fb.group({
+        date: new FormControl(new Date(), Validators.required),
+        description: new FormControl('', Validators.required),
+        vendor: new FormControl('', Validators.required),
+        tag: new FormControl('', Validators.required),
+        type: new FormControl(''),
+        amount: new FormControl<number | null>(null, Validators.required),
+      }),
     });
   }
 }

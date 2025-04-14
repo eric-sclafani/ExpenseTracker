@@ -13,12 +13,24 @@
                 <tr (dblclick)="onRowDblClick(purchase)" formGroupName="update">
 
                     @if(purchase.id == currentEditingId()){
-                        <td><input type="date" formControlName="date"></td>
-                        <td><input type="text" formControlName="descr"></td>
-                        <td><input type="text" formControlName="vendor"></td>
-                        <td><input type="text" formControlName="tag"></td>
-                        <td><input type="text" formControlName="type"></td>
-                        <td><input type="number" formControlName="amount"></td>
+                        <td>
+                            <input type="date" formControlName="date">
+                        </td>
+                        <td>
+                            <input type="text" formControlName="description" placeholder="Description">
+                        </td>
+                        <td>
+                            <input type="text" formControlName="vendor" placeholder="Vendor">
+                        </td>
+                        <td>
+                            <input type="text" formControlName="tag" placeholder="Tag">
+                        </td>
+                        <td>
+                            <input type="text" formControlName="type" placeholder="Type">
+                        </td>
+                        <td>
+                            <input type="number" formControlName="amount" placeholder="Amount">
+                        </td>
                     }
                     @else {
                         @for (col of columns; track $index){
@@ -35,11 +47,15 @@
                     }
                     <div class="row-btns">
                         @if (purchase.id == currentEditingId()){
-                            <button (click)="onRowModify(purchase.id)">
+                            <button (click)="onCancel()" title="Cancel Changes">
+                                <i class="fa-solid fa-ban"></i>
+                            </button>
+
+                            <button (click)="onRowModify(purchase.id)" title="Save">
                                 <i class="fa-solid fa-floppy-disk"></i>
                             </button>
                         }
-                        <button (click)="onDelete(purchase)">
+                        <button (click)="onDelete(purchase)" title="Remove">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </div>
@@ -49,13 +65,28 @@
 
             }
             <tr formGroupName="add">
-                <td><input type="date" formControlName="date"></td>
-                <td><input type="text" formControlName="descr"></td>
-                <td><input type="text" formControlName="vendor"></td>
-                <td><input type="text" formControlName="tag"></td>
-                <td><input type="text" formControlName="type"></td>
                 <td>
-                    <input type="number" formControlName="amount" (keydown.enter)="onRowSubmit()">
+                    <input type="date" formControlName="newDate">
+                </td>
+                <td>
+                    <input type="text" formControlName="newDescr" placeholder="Description">
+                </td>
+                <td>
+                    <input type="text" formControlName="newVendor" placeholder="Vendor">
+                </td>
+                <td>
+                    <input type="text" formControlName="newTag" placeholder="Tag">
+                </td>
+                <td>
+                    <input type="text" formControlName="newType" placeholder="Type">
+                </td>
+                <td>
+                    <input 
+                        type="number" 
+                        formControlName="newAmount" 
+                        (keydown.enter)="onRowSubmit()"
+                        placeholder="Amount"
+                        >
                 </td>
                 <button 
                     class="row-btns" 

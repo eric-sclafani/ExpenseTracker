@@ -11,7 +11,6 @@ import { CurrencyPipe } from '@angular/common';
   styleUrl: './fixed-expense.component.scss',
 })
 export class FixedExpenseComponent implements OnInit {
-  // TODO: add validation
   fg = new FormGroup({
     category: new FormControl<string | null>(null),
     amount: new FormControl<number | null>(null),
@@ -19,7 +18,7 @@ export class FixedExpenseComponent implements OnInit {
   });
 
   fixedExpenses = signal<FixedExpense[]>([]);
-  currentHoveredId: number;
+  editingId = signal<number | null>(null);
 
   constructor(private _expenseService: ExpenseService) {}
 
@@ -27,12 +26,12 @@ export class FixedExpenseComponent implements OnInit {
     this.fixedExpenses = this._expenseService.fixedExpenses;
   }
 
-  onFixedExpHover(id: number) {
-    this.currentHoveredId = id;
+  onDoubleClick(id: number) {
+    this.editingId.set(id);
   }
 
-  resetHoverId() {
-    this.currentHoveredId = 0;
+  onCancel() {
+    this.editingId.set(null);
   }
 
   onDelete(id: number) {
